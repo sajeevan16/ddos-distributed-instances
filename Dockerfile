@@ -11,7 +11,7 @@ WORKDIR /app
 COPY . /app
 RUN pip3 --no-cache-dir install -r requirements.txt                                                                            
 
-EXPOSE 5000
+EXPOSE 7000-8000
 
 ENTRYPOINT  ["python3"]
 
